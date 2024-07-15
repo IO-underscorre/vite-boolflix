@@ -1,6 +1,34 @@
 <script>
+import { store } from '../store';
+
+import axios from 'axios';
+
 export default {
-    name: 'AppHeader'
+    name: 'AppHeader',
+
+    data() {
+        return {
+            store,
+
+            searchBarContent: ''
+        }
+    },
+
+    methods: {
+        searchCard() {
+            if (this.searchBarContent.replace(/\s/g, '').length) {
+                let searchApiURL = store.apiURL + 'search/multi?' + store.apiKeyString + '&query=' + this.searchBarContent;
+                axios.get(searchApiURL).then(callReturn => {
+                    store.searchResult = callReturn.data.results.filter((item) => item.media_type !== "person");
+                    store.searchError = false;
+                }).catch(error => {
+                    store.searchError = true;
+                });
+            } else {
+                store.searchResult = [];
+            }
+        }
+    }
 }
 </script>
 
@@ -9,7 +37,7 @@ export default {
         <a class="logo">
             <img src="../assets/logo.png" alt="Boolflix">
         </a>
-        <input type="text">
+        <input type="text" v-model="searchBarContent" @input="searchCard()">
     </header>
 </template>
 
