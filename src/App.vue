@@ -20,4 +20,8 @@ export default {
 
 <style lang="scss">
 @use './styles/general.scss' as *;
+
+body {
+    background-color: $clr-neutral-dkst;
+}
 </style>
