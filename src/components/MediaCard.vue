@@ -39,7 +39,13 @@ export default {
 <template>
     <article class="media-container">
         <figure class="media-img">
-            <img :src="'https://image.tmdb.org/t/p/w500/' + media.poster_path" :alt="media.original_name">
+            <img v-if="media.poster_path"
+                 :src="'https://image.tmdb.org/t/p/w500/' + media.poster_path"
+                 :alt="media.original_name">
+
+            <span v-else>
+                {{ media.original_name }}
+            </span>
         </figure>
 
         <div class="media-infos">
@@ -58,13 +64,13 @@ export default {
             <div class="other-infos">
                 <div class="vote icon-container">
                     <img :src="`src/assets/vote-icons/star-${voteSection}.png`"
-                        v-for="(voteSection, index) in this.printVote()" :key="index">
+                         v-for="(voteSection, index) in this.printVote()" :key="index">
                 </div>
 
                 <div class="country-and-lang">
                     <div class="language icon-container">
                         <img alt="media.original_language"
-                            :src="`https://unpkg.com/language-icons/icons/${media.original_language}.svg`">
+                             :src="`https://unpkg.com/language-icons/icons/${media.original_language}.svg`">
                     </div>
 
                     <div class="country icon-container">
@@ -93,11 +99,21 @@ export default {
         background-repeat: no-repeat;
         background-size: cover;
         overflow: hidden;
+        position: relative;
 
         img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        span {
+            display: block;
+            position: absolute;
+            top: 15%;
+            width: 100%;
+            text-align: center;
+            font-weight: 900;
         }
     }
 
