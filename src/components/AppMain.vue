@@ -1,7 +1,6 @@
 <script>
 import { store } from '../store';
 import axios from 'axios';
-
 import MediaCard from './MediaCard.vue';
 
 export default {
@@ -14,24 +13,31 @@ export default {
     data() {
         return {
             store,
-
             categories: [
                 {
                     title: 'Popular TV Series',
-                    apiString: 'tv/popular?'
+                    apiString: 'tv/popular?',
+                    mediaList: [],
+                    page: 0,
                 },
                 {
                     title: 'Top Rated TV Series',
-                    apiString: 'tv/top_rated?'
+                    apiString: 'tv/top_rated?',
+                    mediaList: [],
+                    page: 0,
                 },
                 {
                     title: 'Popular Movies',
-                    apiString: 'movie/popular?'
+                    apiString: 'movie/popular?',
+                    mediaList: [],
+                    page: 0,
                 },
                 {
                     title: 'Top Rated Movies',
-                    apiString: 'movie/top_rated?'
-                }
+                    apiString: 'movie/top_rated?',
+                    mediaList: [],
+                    page: 0,
+                },
             ]
         }
     },
@@ -49,7 +55,7 @@ export default {
         getCurrentShownMedias(category) {
             const list = category.mediaList;
             let firstMediaInCurrentPageIndex = category.page * 5;
-            let firstMediaInNextPageIndex = (category.page + 1) * 5 < list.length ? (category.page + 1) * 5 : undefined;
+            let firstMediaInNextPageIndex = (category.page + 1) * 5 < list.length ? (category.page + 1) * 5 : list.length;
 
             return list.slice(firstMediaInCurrentPageIndex, firstMediaInNextPageIndex);
         }
@@ -78,7 +84,8 @@ export default {
                     {{ category.title }}
                 </h2>
                 <ul class="media-list">
-                    <li class="card" v-for="media in getCurrentShownMedias(category)" :key="media.id">
+                    <li class="card" v-for="media in getCurrentShownMedias(category)"
+                        :key="media.id">
                         <MediaCard :media="media" />
                     </li>
                 </ul>
